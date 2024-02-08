@@ -1,49 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Моя фотоплатформа</title>
+   <title>Отображение изображений в формате JPEG из папки "images"</title>
 </head>
 <body>
-    <h1>Моя фотоплатформа</h1>
-
-    <h2>Фотографии</h2>
-    <div id="photo-gallery">
-        <!-- Здесь будут отображаться фотографии -->
-    </div>
-
-    <script>
-        // Путь к каталогу с фотографиями
-        var photoDirectory = "/path/to/images/";
-
-        // Получаем элемент div по его идентификатору
-        var photoGallery = document.getElementById('photo-gallery');
-
-        // Функция для загрузки и отображения фотографий
-        function loadPhotos() {
-            // Очистить содержимое элемента div перед загрузкой новых фотографий
-            photoGallery.innerHTML = '';
-
-            // Загружаем фотографии из каталога
-            fetch(photoDirectory)
-                .then(response => response.text())
-                .then(data => {
-                    // Разделяем путь к фотографиям по символу переноса строки
-                    var photos = data.trim().split('\n');
-
-                    // Создаем элементы изображений и добавляем их в элемент div
-                    photos.forEach(function(photo) {
-                        var image = document.createElement('img');
-                        image.src = photoDirectory + photo;
-                        photoGallery.appendChild(image);
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-
-        // Вызываем функцию загрузки фотографий при загрузке страницы
-        window.onload = loadPhotos;
-    </script>
+   <h1>Изображения</h1>
+   <?php
+   $dir = 'images/';
+   $files = glob($dir . '*.jpeg');
+   foreach ($files as $file) {
+        echo "<img src='$file' alt='Изображение'><br>";
+   }
+   ?>
 </body>
 </html>

@@ -26,6 +26,8 @@
       for (let i = 0; i < images.length; i++) {
         const img = document.createElement("img");
         img.src = folderPath + images[i];
+        img.width = "300"; // Указываем ширину
+        img.height = "200"; // Указываем высоту
         container.appendChild(img);
       }
     }

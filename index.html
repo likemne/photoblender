@@ -7,46 +7,34 @@
     <div id="imageContainer"></div>
 
     <script>
-        // Ссылка на папку с изображениями
-        var folder = "images/";
+        // Подключаем модуль fs для работы с файловой системой
+const fs = require('fs');
 
-        // Получаем контейнер для вывода изображений
-        var container = document.getElementById("imageContainer");
+// Получаем текущую рабочую директорию
+const currentDirectory = process.cwd();
 
-        // Функция для загрузки изображений
-        function loadImages() {
-            // Создаем новый объект XMLHttpRequest
-            var xmlhttp = new XMLHttpRequest();
+// Путь до папки с изображениями
+const imagesDirectory = `${currentDirectory}/images`;
 
-             // Открываем запрос на получение содержимого папки images
-            xmlhttp.open("GET", folder, true);
+// Получаем список файлов в папке images
+fs.readdir(imagesDirectory, (err, files) => {
+  if (err) {
+    console.log(err);
+  } else {
+    // Фильтруем файлы и оставляем только .jpeg файлы
+    const jpegFiles = files.filter(file => file.endsWith('.jpeg'));
 
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) {
-                    // Получаем содержимое папки
-                    var fileNames = xmlhttp.responseText.split("\n");
+    // Получаем ссылки на .jpeg файлы
+    const imageUrls = jpegFiles.map(file => `images/${file}`);
 
-                    // Проходим по всем файлам
-                    for (var i = 0; i < fileNames.length; i++) {
-                        // Проверяем, является ли файл изображением
-                        if (fileNames[i].match(/\.(jpg|jpeg|png|gif)$/)) {
-                            // Создаем новый элемент изображения
-                            var img = document.createElement("img");
-                            img.src = folder + fileNames[i];
-
-                            // Добавляем изображение в контейнер
-                            container.appendChild(img);
-                        }
-                    }
-                }
-            };
-
-            // Отправляем запрос на сервер
-            xmlhttp.send();
-        }
-
-        // Загружаем изображения при загрузке страницы
-        window.onload = loadImages;
+    // Выводим изображения на страницу
+    imageUrls.forEach(url => {
+      const image = document.createElement('img');
+      image.src = url;
+      document.body.appendChild(image);
+    });
+  }
+});
     </script>
 </body>
 </html>

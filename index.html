@@ -1,40 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Images</title>
-</head>
-<body>
-    <div id="imageContainer"></div>
+  <head>
+    <title>Фотографии клиента</title>
+  </head>
+  <body>
+    <h1>Фотографии клиента</h1>
+    <div id="images-container"></div>
 
     <script>
-        // Подключаем модуль fs для работы с файловой системой
-const fs = require('fs');
+      // Функция для создания элемента <img> и добавления его на страницу
+      function displayImage(name) {
+        var container = document.getElementById("images-container");
+        var img = document.createElement("img");
+        img.src = "images/" + name;
+        container.appendChild(img);
+      }
 
-// Получаем текущую рабочую директорию
-const currentDirectory = process.cwd();
+      // Сканирование папки images
+      function scanFolder() {
+        var imagesFolder = "images"; // Путь к папке с изображениями
+        var files = ["DSC07607.jpg", "DSC07623.jpg", "DSC07626.jpg", "DSC07632.jpg", "DSC07637.jpg", "DSC07638.jpg", "DSC07641.jpg", "DSC07642.jpg", "DSC07650.jpg", "DSC07656.jpg", "DSC07658.jpg", "DSC07662.jpg", "DSC07665.jpg", "DSC07667.jpg", "DSC07670.jpg", "DSC07674.jpg"]; // Массив имен файлов
 
-// Путь до папки с изображениями
-const imagesDirectory = `${currentDirectory}/images`;
+        for (var i = 0; i < files.length; i++) {
+          displayImage(files[i]);
+        }
+      }
 
-// Получаем список файлов в папке images
-fs.readdir(imagesDirectory, (err, files) => {
-  if (err) {
-    console.log(err);
-  } else {
-    // Фильтруем файлы и оставляем только .jpeg файлы
-    const jpegFiles = files.filter(file => file.endsWith('.jpeg'));
-
-    // Получаем ссылки на .jpeg файлы
-    const imageUrls = jpegFiles.map(file => `images/${file}`);
-
-    // Выводим изображения на страницу
-    imageUrls.forEach(url => {
-      const image = document.createElement('img');
-      image.src = url;
-      document.body.appendChild(image);
-    });
-  }
-});
+      // Вызов функции сканирования папки
+      scanFolder();
     </script>
-</body>
+  </body>
 </html>

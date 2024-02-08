@@ -1,43 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Передача Фотографий с Любовью</title>
-  <style>
-    .image {
-      display: inline-block;
-      margin-right: 10px;
-    }
-  </style>
-</head>
 <body>
-  <div id="imagesContainer"></div>
+  
+  <!-- Создаем контейнер для изображений -->
+  <div id="imageContainer"></div>
 
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const imagesContainer = document.getElementById('imagesContainer');
-      const folderPath = 'images/';
+    // Получаем ссылку на контейнер для изображений
+    const container = document.getElementById("imageContainer");
 
-      // Получение списка изображений в папке
-      fetch(folderPath, { method: 'GET' })
-        .then(response => response.text())
-        .then(data => {
-          // Разделение на массив имён файлов
-          const files = data.split('\n');
+    // Загружаем изображения из папки
+    function loadImages() {
+      // Путь к папке с изображениями
+      const folderPath = "images/";
 
-          // Фильтрация файлов по расширению jpeg
-          const jpegFiles = files.filter(file => file.toLowerCase().endsWith('.jpeg'));
+      // Список изображений
+      const images = [
+        "image1.jpg",
+        "image2.jpg",
+        "image3.jpg"
+        // и так далее
+      ];
 
-          // Отображение изображений на странице
-          jpegFiles.forEach(file => {
-            const imageElement = document.createElement('img');
-            imageElement.classList.add('image');
-            imageElement.src = folderPath + file;
+      // Для каждого изображения создаем элемент <img> и добавляем его в контейнер
+      for (let i = 0; i < images.length; i++) {
+        const img = document.createElement("img");
+        img.src = folderPath + images[i];
+        container.appendChild(img);
+      }
+    }
 
-            imagesContainer.appendChild(imageElement);
-          });
-        })
-        .catch(error => console.error(error));
-    });
+    // Запускаем функцию загрузки изображений
+    loadImages();
   </script>
 </body>
 </html>

@@ -1,16 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <title>Отображение изображений в формате JPEG из папки "images"</title>
+  <title>Отображение изображений</title>
+  <style>
+    .image {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  </style>
 </head>
 <body>
-   <h1>Изображения</h1>
-   <?php
-   $dir = 'images/';
-   $files = glob($dir . '*.jpeg');
-   foreach ($files as $file) {
-        echo "<img src='$file' alt='Изображение'><br>";
-   }
-   ?>
+  <div id="imagesContainer"></div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const imagesContainer = document.getElementById('imagesContainer');
+      const folderPath = 'images/';
+
+      // Получение списка изображений в папке
+      fetch(folderPath)
+        .then(response => response.text())
+        .then(data => {
+          // Разделение на массив имён файлов
+          const files = data.split('\n');
+
+          // Фильтрация файлов по расширению jpeg
+          const jpegFiles = files.filter(file => file.toLowerCase().endsWith('.jpeg'));
+
+          // Отображение изображений на странице
+          jpegFiles.forEach(file => {
+            const imageElement = document.createElement('img');
+            imageElement.classList.add('image');
+            imageElement.src = folderPath + file;
+
+            imagesContainer.appendChild(imageElement);
+          });
+        })
+        .catch(error => console.error(error));
+    });
+  </script>
 </body>
 </html>

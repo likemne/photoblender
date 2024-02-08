@@ -5,42 +5,38 @@
   <!-- Создаем контейнер для изображений -->
   <div id="imageContainer"></div>
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     // Получаем ссылку на контейнер для изображений
     const container = document.getElementById("imageContainer");
 
     // Загружаем изображения из папки
     function loadImages() {
-      // Путь к папке с изображениями
+      // Путь к папке с изображениями на сервере
       const folderPath = "images/";
 
-      // Список изображений
-      const images = [ 
-        "DSC07607jpg",
-        "DSC07623jpg",
-        "DSC07626jpg",
-        "DSC07632jpg",
-        "DSC07637jpg",
-        "DSC07638jpg",
-        "DSC07641jpg",
-        "DSC07642jpg",
-        "DSC07650jpg",
-        "DSC07656jpg",
-        "DSC07658jpg",
-        "DSC07662jpg",
-        "DSC07665jpg",
-        "DSC07667jpg",
-        "DSC07670jpg",
-        "DSC07674jpg"
-        // и так далее
-      ];
+      // Запрос списка файлов
+      $.ajax({
+        url: folderPath,
+        success: function (data) {
+          // Определяем список файлов из HTML-кода папки
+          const fileList = $(data).find("a").map(function () {
+            return $(this).attr("href");
+          }).get();
 
-      // Для каждого изображения создаем элемент <img> и добавляем его в контейнер
-      for (let i = 0; i < images.length; i++) {
-        const img = document.createElement("img");
-        img.src = folderPath + images[i];
-        container.appendChild(img);
-      }
+          // Отфильтровываем только изображения (можно использовать другие условия фильтрации)
+          const images = fileList.filter(function (fileName) {
+            return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png");
+          });
+
+          // Для каждого изображения создаем элемент <img> и добавляем его в контейнер
+          for (let i = 0; i < images.length; i++) {
+            const img = document.createElement("img");
+            img.src = folderPath + images[i];
+            container.appendChild(img);
+          }
+        }
+      });
     }
 
     // Запускаем функцию загрузки изображений

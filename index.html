@@ -4,7 +4,7 @@
     <title>Передача Фотографий с Любовью</title>
 </head>
 <body>
-    <h1>Моя фотоплатформа</h1>
+    <h1>Передача Фотографий с Любовью</h1>
 
     <h2>Фотографии</h2>
     <div id="photo-gallery">
@@ -13,7 +13,7 @@
 
     <script>
         // Путь к каталогу с фотографиями
-        var photoDirectory = "../images/";
+        var photoDirectory = "images/";
 
         // Получаем элемент div по его идентификатору
         var photoGallery = document.getElementById('photo-gallery');
@@ -24,11 +24,9 @@
             photoGallery.innerHTML = '';
 
             // Загружаем фотографии из каталога
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", photoDirectory, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var data = xhr.responseText;
+            fetch(photoDirectory)
+                .then(response => response.text())
+                .then(data => {
                     // Разделяем путь к фотографиям по символу переноса строки
                     var photos = data.trim().split('\n');
 
@@ -38,11 +36,10 @@
                         image.src = photoDirectory + photo;
                         photoGallery.appendChild(image);
                     });
-                } else {
-                    console.error(xhr.status);
-                }
-            };
-            xhr.send();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         }
 
         // Вызываем функцию загрузки фотографий при загрузке страницы

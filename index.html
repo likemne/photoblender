@@ -1,65 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Images Gallery</title>
+    <title>Сканирование и вывод изображений</title>
+    <style>
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-gap: 20px;
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-  <h1>Images Gallery</h1>
-  <div id="images-container"></div>
+    <div class="image-grid">
+        <?php
+        $dir = "images"; // Путь к папке с изображениями
 
-  <script>
-    window.addEventListener('DOMContentLoaded', function() {
-      var imagesContainer = document.getElementById('images-container');
-      var imagesFolder = 'images/';
-      
-      // Scan the images folder for files
-      fetchImages(imagesFolder, function(images) {
-        // Display images on the web page
-        displayImages(images);
-      });
+        // Получаем список файлов в папке
+        $files = scandir($dir);
 
-      function fetchImages(folder, callback) {
-        var imageFormats = ['jpg', 'jpeg', 'png', 'gif'];
-        var images = [];
-
-        fetch(folder)
-          .then(response => response.text())
-          .then(data => {
-            // Parse HTML text and scan for image files
-            var parser = new DOMParser();
-            var htmlDoc = parser.parseFromString(data, 'text/html');
-            var anchors = htmlDoc.getElementsByTagName('a');
-
-            for (var i = 0; i < anchors.length; i++) {
-              var href = anchors[i].getAttribute('href');
-              var extension = getFileExtension(href);
-
-              if (imageFormats.includes(extension)) {
-                // Add image file to the list
-                images.push(folder + href);
-              }
+        foreach($files as $file) {
+            if($file !== '.' && $file !== '..') {
+                echo '<div class="image-item"><img src="' . $dir . '/' . $file . '" alt="Изображение"></div>';
             }
-
-            // Pass the image list to the callback
-            callback(images);
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-      }
-
-      function getFileExtension(filename) {
-        return filename.split('.').pop().toLowerCase();
-      }
-
-      function displayImages(images) {
-        for (var i = 0; i < images.length; i++) {
-          var img = document.createElement('img');
-          img.setAttribute('src', images[i]);
-          imagesContainer.appendChild(img);
         }
-      }
-    });
-  </script>
+        ?>
+    </div>
 </body>
 </html>

@@ -24,9 +24,11 @@
             photoGallery.innerHTML = '';
 
             // Загружаем фотографии из каталога
-            fetch(photoDirectory)
-                .then(response => response.text())
-                .then(data => {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", photoDirectory, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = xhr.responseText;
                     // Разделяем путь к фотографиям по символу переноса строки
                     var photos = data.trim().split('\n');
 
@@ -36,8 +38,11 @@
                         image.src = photoDirectory + photo;
                         photoGallery.appendChild(image);
                     });
-                })
-                .catch(error => console.error(error));
+                } else {
+                    console.error(xhr.status);
+                }
+            };
+            xhr.send();
         }
 
         // Вызываем функцию загрузки фотографий при загрузке страницы

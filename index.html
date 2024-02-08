@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Передача Фотографий с Любовью</title>
+    <title>Фотографии клиента</title>
     <style>
-      /* Стили для миниатюрных изображений */
+      /* Стили для миниатюрных и увеличенных изображений */
       .thumbnail {
-        width: 100px;
-        height: 100px;
+        width: 300px;
+        height: 300px;
         object-fit: cover;
         cursor: pointer;
       }
 
-      /* Стили для увеличенных изображений */
       .modal {
         display: none; /* Скрываем увеличенное изображение по умолчанию */
         position: fixed;
@@ -42,10 +41,7 @@
     <h1>Фотографии клиента</h1>
     <div id="images-container"></div>
 
-    <div id="modal" class="modal">
-      <span class="close">&times;</span>
-      <img class="modal-content" id="modal-img">
-    </div>
+    <div id="modal" class="modal"></div>
 
     <script>
       // Функция для создания элемента <img> и добавления его на страницу
@@ -53,22 +49,22 @@
         var container = document.getElementById("images-container");
         var img = document.createElement("img");
         img.src = "images/" + name;
-        img.className = "thumbnail"; 
+        img.className = "thumbnail";
         img.onclick = function() {
-          // При клике на миниатюрное изображение отображаем увеличенное изображение
+          // Создаем и отображаем увеличенное изображение
           var modal = document.getElementById("modal");
-          var modalImg = document.getElementById("modal-img");
+          modal.innerHTML = '<span class="close">&times;</span><img class="modal-content" src="' + this.src + '">';
           modal.style.display = "block";
-          modalImg.src = this.src;
+          
+          // При клике на увеличенное изображение, закрываем его
+          modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+              modal.style.display = "none";
+            }
+          });
         };
         container.appendChild(img);
       }
-
-      // Закрытие увеличенного изображения при клике
-      document.getElementsByClassName("close")[0].onclick = function() {
-        var modal = document.getElementById("modal");
-        modal.style.display = "none";
-      };
 
       // Сканирование папки images
       function scanFolder() {

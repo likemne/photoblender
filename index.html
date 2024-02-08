@@ -18,7 +18,7 @@
       const folderPath = 'images/';
 
       // Получение списка изображений в папке
-      fetch(folderPath)
+      fetch(folderPath, { method: 'GET' })
         .then(response => response.text())
         .then(data => {
           // Разделение на массив имён файлов

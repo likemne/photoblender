@@ -1,34 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Сканирование и вывод изображений</title>
-    <style>
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            grid-gap: 20px;
-        }
-        
-        .image-item img {
-            width: 100%;
-            height: auto;
-        }
-    </style>
+    <title>Images</title>
 </head>
 <body>
-    <div class="image-grid">
-        <?php
-        $dir = "images"; // Путь к папке с изображениями
+    <div id="imageContainer"></div>
 
-        // Получаем список файлов в папке
-        $files = scandir($dir);
+    <script>
+        // Ссылка на папку с изображениями
+        var folder = "images/";
 
-        foreach($files as $file) {
-            if($file !== '.' && $file !== '..') {
-                echo '<div class="image-item"><img src="' . $dir . '/' . $file . '.jpg" alt="Изображение"></div>';
-            }
+        // Получаем контейнер для вывода изображений
+        var container = document.getElementById("imageContainer");
+
+        // Функция для загрузки изображений
+        function loadImages() {
+            // Создаем новый объект XMLHttpRequest
+            var xmlhttp = new XMLHttpRequest();
+
+             // Открываем запрос на получение содержимого папки images
+            xmlhttp.open("GET", folder, true);
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    // Получаем содержимое папки
+                    var fileNames = xmlhttp.responseText.split("\n");
+
+                    // Проходим по всем файлам
+                    for (var i = 0; i < fileNames.length; i++) {
+                        // Проверяем, является ли файл изображением
+                        if (fileNames[i].match(/\.(jpg|jpeg|png|gif)$/)) {
+                            // Создаем новый элемент изображения
+                            var img = document.createElement("img");
+                            img.src = folder + fileNames[i];
+
+                            // Добавляем изображение в контейнер
+                            container.appendChild(img);
+                        }
+                    }
+                }
+            };
+
+            // Отправляем запрос на сервер
+            xmlhttp.send();
         }
-        ?>
-    </div>
+
+        // Загружаем изображения при загрузке страницы
+        window.onload = loadImages;
+    </script>
 </body>
 </html>

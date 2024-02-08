@@ -53,7 +53,7 @@
         var container = document.getElementById("images-container");
         var img = document.createElement("img");
         img.src = "images/" + name;
-        img.className = "thumbnail"; // Добавляем класс "thumbnail" к миниатюрным изображениям
+        img.className = "thumbnail"; 
         img.onclick = function() {
           // При клике на миниатюрное изображение отображаем увеличенное изображение
           var modal = document.getElementById("modal");
@@ -64,7 +64,7 @@
         container.appendChild(img);
       }
 
-      // Закрытие увеличенного изображения при клике на крестик
+      // Закрытие увеличенного изображения при клике
       document.getElementsByClassName("close")[0].onclick = function() {
         var modal = document.getElementById("modal");
         modal.style.display = "none";
@@ -72,8 +72,8 @@
 
       // Сканирование папки images
       function scanFolder() {
-        var imagesFolder = "images"; // Путь к папке с изображениями
-        var files = ["DSC07607.jpg", "DSC07623.jpg", "DSC07626.jpg", "DSC07632.jpg", "DSC07637.jpg", "DSC07638.jpg", "DSC07641.jpg", "DSC07642.jpg", "DSC07650.jpg", "DSC07656.jpg", "DSC07658.jpg", "DSC07662.jpg", "DSC07665.jpg", "DSC07667.jpg", "DSC07670.jpg", "DSC07674.jpg"]; // Массив имен файлов
+        var imagesFolder = "images"; 
+        var files = ["DSC07607.jpg", "DSC07623.jpg", "DSC07626.jpg", "DSC07632.jpg", "DSC07637.jpg", "DSC07638.jpg", "DSC07641.jpg", "DSC07642.jpg", "DSC07650.jpg", "DSC07656.jpg", "DSC07658.jpg", "DSC07662.jpg", "DSC07665.jpg", "DSC07667.jpg", "DSC07670.jpg", "DSC07674.jpg"]; 
 
         for (var i = 0; i < files.length; i++) {
           displayImage(files[i]);
